@@ -37,9 +37,4 @@ const tokenIsValid = async (req: Request, res: Response) => {
   }
 };
 
-const validateEmail = async (email: string) => {
-  const regex = /^[^\s@]+@futo\.edu\.ng$/;
-  return regex.test(email);
-};
-
-export { auth, tokenIsValid, validateEmail };
+export { auth, tokenIsValid };

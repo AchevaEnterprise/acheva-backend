@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Instructor from "../models/accounts/instructorModel";
-import { validateEmail } from "./auth";
+import { validateEmail } from "../common/helpers/validateEmailHelper";
 
 const secretKey: any = process.env.SECRET;
 
