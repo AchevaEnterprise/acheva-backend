@@ -7,12 +7,19 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/userController";
-import { auth, tokenIsValid } from "../auth/auth";
+import {
+  auth,
+  tokenIsValid,
+  requestPasswordReset,
+  resetPassword,
+} from "../auth/auth";
 import { login, register } from "../auth/user";
 
 userRoute.post("/register", register);
 userRoute.post("/login", login);
 userRoute.post("/validateToken", tokenIsValid);
+userRoute.post("/request-password-reset", requestPasswordReset);
+userRoute.patch("/reset-password", resetPassword);
 
 userRoute.get("/", getUsers);
 userRoute.get("/:id", auth, getUser);

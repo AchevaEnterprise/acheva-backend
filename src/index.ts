@@ -27,5 +27,5 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`RMS portal server is running on ${mode} mode at port ${port}`);
+  console.log(`Acheva server is running on ${mode} mode at port ${port}`);
 });
