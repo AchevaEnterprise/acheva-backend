@@ -37,11 +37,9 @@ const resultSchema = new Schema<Result>(
     },
     practicalScore: {
       type: Number,
-      required: true,
     },
     continuousAssessment: {
       type: Number,
-      required: true,
     },
     examScore: {
       type: Number,
@@ -49,11 +47,9 @@ const resultSchema = new Schema<Result>(
     },
     total: {
       type: Number,
-      required: true,
     },
     grade: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }

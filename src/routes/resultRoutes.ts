@@ -5,13 +5,21 @@ import {
   getResult,
   getResults,
   addResult,
+  addResultfromCsv,
   updateResult,
   deleteResult,
 } from "../controllers/resultController";
 import { auth } from "../auth/auth";
+import { upload } from "../common/helpers/uploadHelper";
 
 resultRoute.get("/", getResults);
 resultRoute.get("/:id", auth, getResult);
 resultRoute.post("/", auth, addResult);
+resultRoute.post(
+  "/upload-result",
+  auth,
+  upload.single("result"),
+  addResultfromCsv
+);
 resultRoute.patch("/:id", auth, updateResult);
 resultRoute.delete("/:id", auth, deleteResult);

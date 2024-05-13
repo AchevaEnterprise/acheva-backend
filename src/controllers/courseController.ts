@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Course from "../models/courseModel";
 import Result from "../models/resultModel";
+import { jsonToCSV } from "../common/helpers/fileConverterHelper";
 
 const getCourse = async (req: Request, res: Response) => {
   try {
@@ -36,6 +37,24 @@ const getCourseResults = async (req: Request, res: Response) => {
     const results = await Result.find({
       courseId: id,
     });
+    res.status(200).send({
+      data: results,
+      message: "Results",
+      status: 0,
+    });
+  } catch (err: any) {
+    res.status(500).send({ data: {}, error: err.message, status: 1 });
+  }
+};
+
+const getCourseResultInCSV = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const results = await Result.find({
+      courseId: id,
+    });
+
+    await jsonToCSV(results);
     res.status(200).send({
       data: results,
       message: "Results",
@@ -111,6 +130,7 @@ const deleteCourse = async (req: any, res: Response) => {
 export {
   getCourse,
   getCourseResults,
+  getCourseResultInCSV,
   getCourses,
   addCourse,
   updateCourse,

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
+import fs from "fs";
 import Result from "../models/resultModel";
 import Course from "../models/courseModel";
+import { spreadsheetToJson } from "../common/helpers/fileConverterHelper";
 
 const getResult = async (req: Request, res: Response) => {
   try {
@@ -78,6 +80,40 @@ const addResult = async (req: any, res: Response) => {
   }
 };
 
+const addResultfromCsv = async (req: any, res: Response) => {
+  try {
+    const createdBy = req.user;
+    const { courseId } = req.body;
+    const destination = `src/controllers/uploads/${req.file.filename}`;
+    let results = await spreadsheetToJson(destination, req.file.mimetype);
+    const resultsWithCourseId = results.map((result: any) => ({
+      ...result,
+      courseId,
+      createdBy,
+    }));
+    const newResults = await Result.insertMany(resultsWithCourseId);
+    newResults.map(async (result) => {
+      await Course.findByIdAndUpdate(courseId, {
+        $push: {
+          results: result,
+        },
+      });
+    });
+    fs.unlinkSync(destination);
+    return res.status(201).send({
+      message: "Result added successfully!",
+      data: "newResult",
+      status: 0,
+    });
+  } catch (err) {
+    return res.status(400).send({
+      message: err,
+      data: {},
+      status: 1,
+    });
+  }
+};
+
 const updateResult = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
@@ -118,4 +154,11 @@ const deleteResult = async (req: any, res: Response) => {
   }
 };
 
-export { getResult, getResults, addResult, updateResult, deleteResult };
+export {
+  getResult,
+  getResults,
+  addResult,
+  updateResult,
+  deleteResult,
+  addResultfromCsv,
+};
