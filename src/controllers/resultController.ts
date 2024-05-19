@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import fs from "fs";
-import path from "node:path";
 import Result from "../models/resultModel";
 import Course from "../models/courseModel";
 import { spreadsheetToJson } from "../common/helpers/fileConverterHelper";
@@ -85,11 +84,7 @@ const addResultfromCsv = async (req: any, res: Response) => {
   try {
     const createdBy = req.user;
     const { courseId } = req.body;
-    const destination = path.resolve(
-      __dirname,
-      `../../controllers/uploads/${req.file.filename}`
-    );
-    const directory = path.resolve(__dirname, `./uploads/${req.file.filename}`);
+    const destination = `src/controllers/uploads/${req.file.filename}`;
     let results = await spreadsheetToJson(destination, req.file.mimetype);
     const resultsWithCourseId = results.map((result: any) => ({
       ...result,
@@ -104,7 +99,7 @@ const addResultfromCsv = async (req: any, res: Response) => {
         },
       });
     });
-    fs.unlinkSync(directory);
+    fs.unlinkSync(destination);
     return res.status(201).send({
       message: "Result added successfully!",
       data: "newResult",
