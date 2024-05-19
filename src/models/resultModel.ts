@@ -10,6 +10,7 @@ export interface Result extends Document {
   examScore: number;
   total: number;
   grade: string;
+  fileUrl: string;
   createdBy: Schema.Types.ObjectId;
 }
 
@@ -50,6 +51,10 @@ const resultSchema = new Schema<Result>(
     },
     grade: {
       type: String,
+    },
+    fileUrl: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true }

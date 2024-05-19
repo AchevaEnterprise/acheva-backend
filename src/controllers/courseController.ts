@@ -54,9 +54,9 @@ const getCourseResultInCSV = async (req: Request, res: Response) => {
       courseId: id,
     });
 
-    await jsonToCSV(results);
+    const url = await jsonToCSV(results);
     res.status(200).send({
-      data: results,
+      data: url,
       message: "Results",
       status: 0,
     });
