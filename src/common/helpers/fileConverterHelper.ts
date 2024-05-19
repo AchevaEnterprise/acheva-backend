@@ -2,6 +2,7 @@ import CSVToJSON from "csvtojson";
 import xlsx from "xlsx";
 const JSONToCSV = require("json2csv").parse;
 import fs from "fs";
+import path from "path";
 import { bucket } from "../../config/firebaseConfig";
 
 const spreadsheetToJson = async (destination: string, mimetype: string) => {
@@ -43,7 +44,15 @@ const jsonToCSV = async (data: any) => {
   const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
   const fileDirectory = uniqueSuffix;
   fs.writeFileSync(`src/controllers/uploads/${fileDirectory}.csv`, csv);
-  const directory = `src/controllers/uploads/${fileDirectory}.csv`;
+  let directory;
+  if (process.env.mode == "development") {
+    directory = `src/controllers/uploads/${fileDirectory}.csv`;
+  } else {
+    directory = path.resolve(
+      __dirname,
+      `src/controllers/uploads/${fileDirectory}.csv`
+    );
+  }
   const destination = `result-uploads/${fileDirectory}.csv`;
   const url = await uploadFile(directory, destination);
   fs.unlinkSync(directory);
