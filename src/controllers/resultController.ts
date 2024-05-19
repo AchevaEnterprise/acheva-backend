@@ -84,7 +84,10 @@ const addResultfromCsv = async (req: any, res: Response) => {
   try {
     const createdBy = req.user;
     const { courseId } = req.body;
-    const destination = `src/controllers/uploads/${req.file.filename}`;
+    let destination = `src/controllers/uploads/${req.file.filename}`;
+    if (process.env.MODE == "production") {
+      destination = `/opt/render/project/src/build/src/controllers/uploads/${req.file.filename}`;
+    }
     let results = await spreadsheetToJson(destination, req.file.mimetype);
     const resultsWithCourseId = results.map((result: any) => ({
       ...result,
