@@ -1,6 +1,6 @@
 import multer from "multer";
 
-let filePath;
+let filePath: string;
 if (process.env.MODE == "production") {
   filePath = "/opt/render/project/src/build/src/controllers/uploads";
 } else {
