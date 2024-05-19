@@ -1,15 +1,5 @@
 import express from "express";
 export const resultRoute = express.Router();
-import fs from "fs";
-
-if (process.env.MODE == "production") {
-  const filePath = "/opt/render/project/src/build/src/controllers/uploads";
-
-  if (!fs.existsSync(filePath)) {
-    fs.mkdirSync(filePath, { recursive: true });
-    console.log(`Directory created: ${filePath}`);
-  }
-}
 
 import {
   getResult,

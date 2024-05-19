@@ -52,10 +52,6 @@ const resultSchema = new Schema<Result>(
     grade: {
       type: String,
     },
-    fileUrl: {
-      type: String,
-      default: null,
-    },
   },
   { timestamps: true }
 );

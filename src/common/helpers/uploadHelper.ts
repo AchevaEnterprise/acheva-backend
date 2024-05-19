@@ -1,8 +1,15 @@
 import multer from "multer";
 
+let filePath;
+if (process.env.MODE == "production") {
+  filePath = "/opt/render/project/src/build/src/controllers/uploads";
+} else {
+  filePath = "src/controllers/uploads";
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "src/controllers/uploads");
+    cb(null, filePath);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
