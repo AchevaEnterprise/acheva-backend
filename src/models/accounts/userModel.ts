@@ -28,7 +28,6 @@ const userSchema = new Schema<User>(
     },
     department: {
       type: String,
-      required: true,
     },
     registrationNumber: {
       type: Number,

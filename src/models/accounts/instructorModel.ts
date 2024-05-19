@@ -26,12 +26,11 @@ const instructorSchema = new Schema<Instructor>(
     },
     department: {
       type: String,
-      required: true,
     },
     role: {
       type: String,
       enum: InstructorRole,
-      default: null,
+      default: InstructorRole.COURSE_ADVISER,
     },
   },
   { timestamps: true }
