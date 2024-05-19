@@ -2,7 +2,7 @@ import CSVToJSON from "csvtojson";
 import xlsx from "xlsx";
 const JSONToCSV = require("json2csv").parse;
 import fs from "fs";
-import path from "path";
+import path from "node:path";
 import { bucket } from "../../config/firebaseConfig";
 
 const spreadsheetToJson = async (destination: string, mimetype: string) => {
@@ -43,16 +43,11 @@ const jsonToCSV = async (data: any) => {
   });
   const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
   const fileDirectory = uniqueSuffix;
-  fs.writeFileSync(`src/controllers/uploads/${fileDirectory}.csv`, csv);
-  let directory;
-  if (process.env.mode == "development") {
-    directory = `src/controllers/uploads/${fileDirectory}.csv`;
-  } else {
-    directory = path.resolve(
-      __dirname,
-      `src/controllers/uploads/${fileDirectory}.csv`
-    );
-  }
+  const directory = path.resolve(
+    __dirname,
+    `../../controllers/uploads/${fileDirectory}.csv`
+  );
+  fs.writeFileSync(directory, csv);
   const destination = `result-uploads/${fileDirectory}.csv`;
   const url = await uploadFile(directory, destination);
   fs.unlinkSync(directory);
@@ -72,7 +67,6 @@ async function uploadFile(localFilePath: string, destination: string) {
   const file = bucket.file(destination);
   const url = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
 
-  console.log(`${localFilePath} uploaded to ${destination} ${url}`);
   return url;
 }
 
