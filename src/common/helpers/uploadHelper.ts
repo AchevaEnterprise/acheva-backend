@@ -1,14 +1,4 @@
 import multer from "multer";
-import fs from "fs";
-
-if (process.env.MODE == "production") {
-  const filePath = "/opt/render/project/src/build/src/controllers/uploads";
-
-  if (!fs.existsSync(filePath)) {
-    fs.mkdirSync(filePath, { recursive: true });
-    console.log(`Directory created: ${filePath}`);
-  }
-}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
