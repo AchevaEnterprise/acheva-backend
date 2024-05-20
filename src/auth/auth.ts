@@ -131,4 +131,87 @@ const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
-export { auth, tokenIsValid, requestPasswordReset, resetPassword };
+const sendOtp = async (req: Request, res: Response) => {
+  try {
+    const { email, userId } = req.body;
+
+    // Send verification code to email
+    const verificationCode = Math.floor(100000 + Math.random() * 900000);
+    const otp = verificationCode;
+    const otpSentTime = Date.now();
+    let data = { otp, otpSentTime };
+
+    sendMail(
+      email,
+      "Password Reset Successfully",
+      { otp },
+      "../helpers/template/emailOtp.handlebars"
+    );
+    await Token.findOneAndUpdate({ userId }, data);
+
+    res.status(201).send({
+      message: "Verification Sent",
+      status: 0,
+    });
+  } catch (err: any) {
+    res.status(500).send({
+      data: {},
+      error: `${err.message}`,
+      status: 1,
+    });
+  }
+};
+
+const verifyEmail = async (req: Request, res: Response) => {
+  try {
+    const { otp, userId } = req.body;
+    const user = await User.findById({ id: userId });
+    const token: any = await Token.findById({ userId });
+    // Check if expired
+    // Date.now / 1000 converting time to seconds
+    const currentTime = Date.now() / 1000;
+    const existingTime = token.otpSentTime / 1000;
+    const expiryTime = existingTime + 600; // expires in 600s (10 mins)
+
+    if (currentTime > expiryTime)
+      return res.status(400).send({
+        data: {},
+        message: "OTP has expired!",
+        status: 1,
+      });
+    // Check verification code against stored code
+    if (token.otp == otp) {
+      const data = {
+        isVerified: true,
+        otp: 0,
+      };
+      await User.findByIdAndUpdate({ _id: userId }, data);
+      return res.status(200).send({
+        data: true,
+        message: "Email Verified!",
+        status: 0,
+      });
+    } else {
+      return res.status(400).send({
+        data: false,
+        message: "OTP doesnt match!",
+        status: 0,
+      });
+    }
+  } catch (err: any) {
+    res.status(500).send({
+      data: {},
+      error: `${err.message}`,
+      status: 1,
+    });
+  }
+};
+
+export {
+  auth,
+  tokenIsValid,
+  requestPasswordReset,
+  resetPassword,
+  sendOtp,
+  verifyEmail,
+};

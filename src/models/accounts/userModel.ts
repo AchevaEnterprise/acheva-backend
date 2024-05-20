@@ -9,6 +9,7 @@ export interface User extends Document {
   level: string;
   courseAdviserId: Schema.Types.ObjectId;
   accountType: Schema.Types.ObjectId;
+  isVerified: boolean;
 }
 
 const userSchema = new Schema<User>(
@@ -45,6 +46,10 @@ const userSchema = new Schema<User>(
       type: String,
       enum: ["student", "admin"],
       default: "student",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

@@ -5,18 +5,24 @@ export interface Token extends Document {
   token: string;
   userId: Types.ObjectId | User;
   createdAt: Date;
+  otp: number;
+  otpSentTime: Date;
 }
 
 const tokenSchema = new Schema<Token>({
   token: {
     type: String,
-    required: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
+  otp: {
+    type: Number,
+    default: 0,
+  },
+  otpSentTime: { type: Date },
   createdAt: {
     type: Date,
     default: Date.now,

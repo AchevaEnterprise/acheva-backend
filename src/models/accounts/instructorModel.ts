@@ -7,6 +7,7 @@ export interface Instructor extends Document {
   password: string;
   department: string;
   role: InstructorRole;
+  isVerified: boolean;
 }
 
 const instructorSchema = new Schema<Instructor>(
@@ -26,6 +27,9 @@ const instructorSchema = new Schema<Instructor>(
     },
     department: {
       type: String,
+    },
+    isVerified: {
+      type: Boolean,
     },
     role: {
       type: String,
