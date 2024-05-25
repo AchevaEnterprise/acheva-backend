@@ -2,7 +2,7 @@
 
 This is a Final year project for the department of Mathematics in [FUTO](futo.edu.ng).
 
-This Project is made up of 4 core team members and our Supervisor.
+This Project is made up of 4 core team members and our Project Supervisor.
 **Daniel Chinemerem** (me, Software Engineer),
 **Njoku Chigoziem Glory**(Product Designer)
 **Nduagwuike Christopher Obinna**(Product Manager, Data Analyst)
